@@ -38,21 +38,27 @@ const registerSchema = z.object({
   password: z.string().trim().min(1, "Password is required"),
 });
 
+import { useNavigate } from "react-router-dom";
+
 export const AuthDialog = () => {
   const [showPassword, setShowPassword] = useState(false);
   const { isAuthOpen, closeAuth, view, setView } = useAuth();
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
 
   const fetchCart = useCart((state) => state.fetchCart);
 
   // Login Mutation
   const loginMutation = useMutation({
     mutationFn: loginMutationFn,
-    onSuccess: async () => {
+    onSuccess: async (data: any) => {
       await queryClient.invalidateQueries({ queryKey: ["current-user"] });
       await fetchCart();
       toast.success("Successfully logged in!");
       closeAuth();
+      if (data?.user?.isAdmin) {
+        navigate("/admin");
+      }
     },
     onError: (error: any) => {
       toast.error(
