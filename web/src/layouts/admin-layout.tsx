@@ -107,19 +107,19 @@ export default function AdminLayout() {
   }
 
   return (
-    <SidebarProvider>
+    <SidebarProvider style={{ "--sidebar-width": "18rem" } as React.CSSProperties}>
       <div className="flex min-h-screen w-full">
         <Sidebar className="border-r border-border">
-          <SidebarHeader className="flex h-16 items-center border-b border-border/10 px-4">
-            <Link to={PROTECTED_ROUTES.ADMIN_DASHBOARD} className="flex items-center gap-2 font-semibold">
+          <SidebarHeader className="flex h-16 items-center border-b border-border/10 px-5">
+            <Link to={PROTECTED_ROUTES.ADMIN_DASHBOARD} className="flex items-center gap-3 font-semibold">
               <Logo to={PROTECTED_ROUTES.ADMIN_DASHBOARD} />
-              <span className="text-xs font-bold uppercase tracking-wider text-secondary">Admin</span>
+              <span className="text-[11px] font-bold uppercase tracking-wider text-secondary bg-secondary/10 px-2 py-0.5 rounded-md">Admin</span>
             </Link>
           </SidebarHeader>
-          <SidebarContent className="p-3 gap-5">
-            <SidebarGroup>
+          <SidebarContent className="px-3.5 py-4">
+            <SidebarGroup className="p-0">
               <SidebarGroupContent>
-                <SidebarMenu>
+                <SidebarMenu className="gap-1.5">
                   {adminNavItems.map((item) => {
                     const Icon = item.icon;
                     const isActive = item.to === pathname;
@@ -128,12 +128,13 @@ export default function AdminLayout() {
                         <SidebarMenuButton 
                           asChild
                           isActive={isActive}
+                          className="h-10"
                         >
                           <Link
                             to={item.to}
-                            className="flex w-full items-center gap-3 text-[15px]! rounded-lg py-2 font-medium transition-all"
+                            className="flex w-full items-center gap-3.5 text-[15px]! rounded-lg px-3.5 py-2.5 font-medium transition-all"
                           >
-                            <Icon className="h-4 w-4" />
+                            <Icon className="h-4.5 w-4.5 shrink-0" />
                             <span>{item.label}</span>
                           </Link>
                         </SidebarMenuButton>
@@ -144,10 +145,10 @@ export default function AdminLayout() {
               </SidebarGroupContent>
             </SidebarGroup>
           </SidebarContent>
-          <SidebarFooter className="border-t border-border/10 p-3 gap-2">
+          <SidebarFooter className="border-t border-border/10 p-4 gap-2.5">
             <Button
               size="lg"
-              className="w-full justify-start gap-2 bg-gray-800"
+              className="w-full justify-start gap-2.5 bg-gray-800 hover:bg-gray-700 h-11"
               onClick={() => navigate("/")}
             >
               <ArrowLeft className="h-4 w-4" />
@@ -156,7 +157,7 @@ export default function AdminLayout() {
             <Button
               variant="ghost"
               size="sm"
-              className="w-full justify-start gap-2 text-red-500 hover:bg-destructive/10 hover:text-destructive"
+              className="w-full justify-start gap-2.5 text-red-500 hover:bg-destructive/10 hover:text-destructive h-10"
               onClick={() => logoutMutation.mutate()}
             >
               <LogOut className="h-4 w-4" />
@@ -178,7 +179,7 @@ export default function AdminLayout() {
               </div>
             </div>
           </header>
-          <main className="flex-1 w-full max-w-[1100px] mx-auto overflow-y-auto p-4">
+          <main className="flex-1 w-full max-w-[1100px] mx-auto overflow-y-auto p-6">
             <Outlet />
           </main>
         </div>
