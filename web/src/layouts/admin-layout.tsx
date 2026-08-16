@@ -116,7 +116,7 @@ export default function AdminLayout() {
               <span className="text-xs font-bold uppercase tracking-wider text-secondary">Admin</span>
             </Link>
           </SidebarHeader>
-          <SidebarContent className="p-3">
+          <SidebarContent className="p-3 gap-5">
             <SidebarGroup>
               <SidebarGroupContent>
                 <SidebarMenu>
@@ -131,7 +131,7 @@ export default function AdminLayout() {
                         >
                           <Link
                             to={item.to}
-                            className="flex w-full items-center gap-5 text-[15px]! rounded-lg py-2 font-medium transition-all"
+                            className="flex w-full items-center gap-3 text-[15px]! rounded-lg py-2 font-medium transition-all"
                           >
                             <Icon className="h-4 w-4" />
                             <span>{item.label}</span>
