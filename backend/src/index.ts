@@ -72,9 +72,12 @@ if (envConfig.NODE_ENV === "production") {
 
 app.use(errorHandler);
 
+import { ensureAdminExists } from "./seeds/admin.seed";
+
 const port = Number(envConfig.PORT) || 5000;
 
 app.listen(port, async () => {
   await connectDatabase();
+  await ensureAdminExists();
   console.log(`Server running on port ${port} in ${envConfig.NODE_ENV} mode`);
 });
