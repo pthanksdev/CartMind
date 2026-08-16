@@ -53,6 +53,7 @@ app.get("/health", asyncHandler(
   });
 }))
 
+app.use("/api/v1", routes);
 app.use("/api", routes);
 
 if (envConfig.NODE_ENV === "production") {
