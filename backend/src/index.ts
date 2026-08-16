@@ -44,7 +44,7 @@ app.get("/health", asyncHandler(
 app.use("/api/v1", routes);
 app.use("/api", routes);
 
-if (envConfig.NODE_ENV === "production") {
+if (process.env.NODE_ENV === "production") {
   const webPath = path.resolve(__dirname, "../../web/dist");
   const clientPath = path.resolve(__dirname, "../../client/dist");
   const activePath = require("fs").existsSync(webPath) ? webPath : clientPath;
@@ -58,7 +58,7 @@ if (envConfig.NODE_ENV === "production") {
     app.get("/", (_req: Request, res: Response) => {
       res.status(HTTPSTATUS.OK).json({
         message: "CartMind API is online & healthy!",
-        environment: envConfig.NODE_ENV,
+        environment: process.env.NODE_ENV || "production",
       });
     });
   }
@@ -68,11 +68,11 @@ app.use(errorHandler);
 
 import { ensureAdminExists } from "./seeds/admin.seed";
 
-const port = Number(process.env.PORT || envConfig.PORT) || 5000;
+const port: number = Number(process.env.PORT) || 10000;
 
 app.listen(port, "0.0.0.0", async () => {
   console.log(`Server listening on 0.0.0.0:${port}`);
   await connectDatabase();
   await ensureAdminExists();
-  console.log(`Server running on port ${port} in ${envConfig.NODE_ENV} mode`);
+  console.log(`Server running on port ${port} in ${process.env.NODE_ENV || "development"} mode`);
 });
