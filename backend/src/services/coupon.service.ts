@@ -40,6 +40,17 @@ export const getAllCouponsService = async () => {
   return coupons;
 };
 
+export const getActiveCouponsService = async () => {
+  const coupons = await prisma.coupon.findMany({
+    where: {
+      isActive: true,
+      expiresAt: { gte: new Date() },
+    },
+    orderBy: { createdAt: "desc" },
+  });
+  return coupons;
+};
+
 export const toggleCouponStatusService = async (couponId: string) => {
   const coupon = await prisma.coupon.findUnique({
     where: { id: couponId },
