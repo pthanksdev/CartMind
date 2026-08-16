@@ -62,7 +62,9 @@ if (envConfig.NODE_ENV === "production") {
 
 app.use(errorHandler);
 
-app.listen(envConfig.PORT, async () => {
+const port = Number(envConfig.PORT) || 5000;
+
+app.listen(port, async () => {
   await connectDatabase();
-  console.log(`Server running on port ${envConfig.PORT} in ${envConfig.NODE_ENV} mode`);
+  console.log(`Server running on port ${port} in ${envConfig.NODE_ENV} mode`);
 });
