@@ -119,7 +119,7 @@ export default function AdminLayout() {
           <SidebarContent className="px-3.5 py-4">
             <SidebarGroup className="p-0">
               <SidebarGroupContent>
-                <SidebarMenu className="gap-1.5">
+                <SidebarMenu className="gap-2">
                   {adminNavItems.map((item) => {
                     const Icon = item.icon;
                     const isActive = item.to === pathname;
