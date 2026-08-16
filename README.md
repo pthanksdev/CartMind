@@ -4,10 +4,11 @@
 [![Node.js](https://img.shields.io/badge/Node.js-v20+-green.svg?style=flat-square&logo=node.js)](https://nodejs.org)
 [![React Native](https://img.shields.io/badge/React_Native-0.81.5-61DAFB.svg?style=flat-square&logo=react)](https://reactnative.dev)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0+-3178C6.svg?style=flat-square&logo=typescript)](https://www.typescriptlang.org)
-[![MongoDB](https://img.shields.io/badge/MongoDB-Database-47A248.svg?style=flat-square&logo=mongodb)](https://www.mongodb.com)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Database-4169E1.svg?style=flat-square&logo=postgresql)](https://www.postgresql.org)
+[![Prisma ORM](https://img.shields.io/badge/Prisma-ORM-2D3748.svg?style=flat-square&logo=prisma)](https://www.prisma.io)
 [![Stripe](https://img.shields.io/badge/Stripe-Payments-6772E5.svg?style=flat-square&logo=stripe)](https://stripe.com)
 
-> **CartMind AI** is an enterprise-grade, multi-platform e-commerce ecosystem powered by Node.js, Express, MongoDB, React, and React Native (Expo SDK 54). Features an interactive Voice AI Shopping Assistant, glassmorphic UI design, instant digital wallet payments, Stripe integration, guest-to-user cart synchronization, and real-time administrative analytics.
+> **CartMind AI** is an enterprise-grade, multi-platform e-commerce ecosystem powered by Node.js, Express, PostgreSQL, Prisma ORM, React, and React Native (Expo SDK 54). Features an interactive Voice AI Shopping Assistant, glassmorphic UI design, instant digital wallet payments, Stripe integration, guest-to-user cart synchronization, and real-time administrative analytics.
 
 ---
 
@@ -30,7 +31,7 @@
 ### 4. Payments, Wallet & Checkout
 * **Stripe Payment Gateway**: End-to-end card payments with automatic stock reservation on Stripe webhook status confirmation.
 * **CartMind Digital Wallet**: Integrated user balance for top-ups, instant wallet checkouts, and withdrawal tracking.
-* **Calculated Pricing & Security**: Subtotals, taxes, and shipping fees are strictly recalculated server-side from Mongoose DB prices.
+* **Calculated Pricing & Security**: Subtotals, taxes, and shipping fees are strictly recalculated server-side from PostgreSQL DB prices.
 
 ### 5. Admin Portal & Telemetry
 * **Dashboard Analytics**: Revenue charts, user acquisition metrics, order dispatch management, and coupon code campaign management.
@@ -43,13 +44,13 @@
 ```
 MERN-AI-Ecommerce-Platform/
 ├── backend/                  # Node.js + Express 5 + TypeScript Server
+│   ├── prisma/               # PostgreSQL Database Schema & Prisma Migrations
 │   ├── src/
 │   │   ├── config/           # DB, Passport JWT, & Environment Configs
 │   │   ├── controllers/      # Route Controllers wrapped in asyncHandler
 │   │   ├── middlewares/      # Zod validation, Auth Guards, Error Handler
-│   │   ├── models/           # Mongoose DB Schemas (User, Product, Order, etc.)
 │   │   ├── routes/           # RESTful API Endpoints
-│   │   └── services/         # Async Business Logic Services
+│   │   └── services/         # Async Business Logic Services using Prisma Client
 ├── web/                      # React 19 + Vite Storefront & Admin Portal
 │   ├── src/
 │   │   ├── components/       # Glassmorphic UI & Voice Shopping Modal
@@ -70,7 +71,7 @@ MERN-AI-Ecommerce-Platform/
 ### Prerequisites
 * **Node.js**: `v18.0.0` or higher
 * **npm**: `v9.0.0` or higher
-* **MongoDB**: Local MongoDB instance or MongoDB Atlas Connection URI
+* **PostgreSQL**: PostgreSQL 14+ instance (Local, Neon, Supabase, or Railway)
 
 ---
 
@@ -85,12 +86,17 @@ Create a `.env` file inside `backend/.env`:
 ```env
 PORT=5000
 NODE_ENV=development
-MONGO_URI=mongodb://localhost:27017/cartmind
+DATABASE_URL=postgresql://user:password@localhost:5432/cartmind?schema=public
 JWT_SECRET=your_super_secret_jwt_key
 FRONTEND_ORIGIN=http://localhost:5173
 GMAIL_USER=your_email@gmail.com
 GMAIL_APP_PASSWORD=your_gmail_app_password
 STRIPE_SECRET_KEY=sk_test_your_stripe_key
+```
+
+Run Prisma Database Migrations:
+```bash
+npx prisma db push
 ```
 
 Run the backend development server:
@@ -159,4 +165,4 @@ Scan the QR code with **Expo Go** on iOS or Android.
 
 This project is open-source for educational and personal development. For commercial deployment, SaaS licensing, or consulting inquiries, please check license terms.
 
-Developed using **MERN Stack**, **React Native**, and **Google Antigravity Design Engineering**.
+Developed using **Node.js**, **PostgreSQL**, **Prisma ORM**, **React Native**, and **Google Antigravity Design Engineering**.

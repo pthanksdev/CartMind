@@ -12,6 +12,7 @@ import couponRoute from "./coupon.route";
 import settingRoute from "./setting.route";
 import inquiryRoute from "./inquiry.route";
 import voiceRoute from "./voice.route";
+import heroRoute from "./hero.route";
 
 const router = Router();
 
@@ -28,5 +29,6 @@ router.use("/coupons", couponRoute);
 router.use("/settings", settingRoute);
 router.use("/inquiries", inquiryRoute);
 router.use("/voice", voiceRoute);
+router.use("/hero-banners", heroRoute);
 
 export default router;

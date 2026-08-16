@@ -4,6 +4,7 @@ import { requireAdmin } from "../middlewares/requireAdmin.middleware";
 import {
   createCouponController,
   getAllCouponsController,
+  getActiveCouponsController,
   toggleCouponStatusController,
   deleteCouponController,
   validateCouponController,
@@ -11,6 +12,7 @@ import {
 
 const couponRoutes = Router();
 
+couponRoutes.get("/active", getActiveCouponsController);
 couponRoutes.post("/validate", validateCouponController);
 
 // Admin endpoints
