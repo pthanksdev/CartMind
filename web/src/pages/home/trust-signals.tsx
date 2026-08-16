@@ -1,4 +1,4 @@
-import React from "react";
+
 import { Zap, ShieldCheck, Users, Headphones } from "lucide-react";
 
 const trustItems = [

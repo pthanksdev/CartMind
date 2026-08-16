@@ -1,4 +1,4 @@
-import React from "react";
+
 import { Sparkles, ThumbsUp } from "lucide-react";
 import ProductCard from "@/components/product-card";
 import { useQuery } from "@tanstack/react-query";

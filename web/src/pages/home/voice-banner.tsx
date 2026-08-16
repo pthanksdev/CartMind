@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Mic, Sparkles, ArrowRight, CheckCircle2, Loader2 } from "lucide-react";
+import { useState } from "react";
+import { Mic, Sparkles, ArrowRight, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useMutation } from "@tanstack/react-query";
 import { parseVoiceCommandMutationFn } from "@/lib/api";

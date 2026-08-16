@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Timer, Flame, ArrowRight } from "lucide-react";
 import ProductCard from "@/components/product-card";
 import { useQuery } from "@tanstack/react-query";

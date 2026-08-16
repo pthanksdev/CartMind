@@ -1,4 +1,4 @@
-import React from "react";
+
 import Autoplay from "embla-carousel-autoplay";
 import { Button } from "@/components/ui/button";
 import {
