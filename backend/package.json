@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon",
-    "build": "tsup src/index.ts --format cjs --out-dir dist && cp ./package.json ./dist",
+    "build": "npx prisma generate && tsup src/index.ts --format cjs --out-dir dist && cp ./package.json ./dist",
     "start": "node dist/index.js",
     "seed:categories": "ts-node --transpile-only src/seeds/category.seed.ts"
   },
@@ -28,9 +28,12 @@
     "nodemailer": "^9.0.5",
     "passport": "^0.7.0",
     "passport-jwt": "^4.0.1",
+    "prisma": "^6.19.3",
     "slugify": "^1.6.9",
     "streamifier": "^0.1.1",
     "stripe": "^20.4.1",
+    "tsup": "^8.5.1",
+    "typescript": "^6.0.3",
     "zod": "^4.4.3"
   },
   "devDependencies": {
@@ -45,9 +48,6 @@
     "@types/passport": "^1.0.17",
     "@types/passport-jwt": "^4.0.1",
     "nodemon": "^3.1.14",
-    "prisma": "^6.19.3",
-    "ts-node": "^10.9.2",
-    "tsup": "^8.5.1",
-    "typescript": "^6.0.3"
+    "ts-node": "^10.9.2"
   }
 }
