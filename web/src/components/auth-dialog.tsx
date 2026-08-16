@@ -1,8 +1,10 @@
+import { useState } from "react";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { Eye, EyeOff } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { loginMutationFn, registerMutationFn } from "@/lib/api";
@@ -37,6 +39,7 @@ const registerSchema = z.object({
 });
 
 export const AuthDialog = () => {
+  const [showPassword, setShowPassword] = useState(false);
   const { isAuthOpen, closeAuth, view, setView } = useAuth();
   const queryClient = useQueryClient();
 
@@ -146,11 +149,26 @@ export const AuthDialog = () => {
                   <FormItem>
                     <FormLabel>Password</FormLabel>
                     <FormControl>
-                      <Input
-                        type="password"
-                        autoComplete="current-password"
-                        {...field}
-                      />
+                      <div className="relative">
+                        <Input
+                          type={showPassword ? "text" : "password"}
+                          autoComplete="current-password"
+                          className="pr-10"
+                          {...field}
+                        />
+                        <button
+                          type="button"
+                          onClick={() => setShowPassword((prev) => !prev)}
+                          className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
+                          aria-label={showPassword ? "Hide password" : "Show password"}
+                        >
+                          {showPassword ? (
+                            <EyeOff className="h-4 w-4" />
+                          ) : (
+                            <Eye className="h-4 w-4" />
+                          )}
+                        </button>
+                      </div>
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -228,11 +246,26 @@ export const AuthDialog = () => {
                   <FormItem>
                     <FormLabel>Password</FormLabel>
                     <FormControl>
-                      <Input
-                        type="password"
-                        autoComplete="new-password"
-                        {...field}
-                      />
+                      <div className="relative">
+                        <Input
+                          type={showPassword ? "text" : "password"}
+                          autoComplete="new-password"
+                          className="pr-10"
+                          {...field}
+                        />
+                        <button
+                          type="button"
+                          onClick={() => setShowPassword((prev) => !prev)}
+                          className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
+                          aria-label={showPassword ? "Hide password" : "Show password"}
+                        >
+                          {showPassword ? (
+                            <EyeOff className="h-4 w-4" />
+                          ) : (
+                            <Eye className="h-4 w-4" />
+                          )}
+                        </button>
+                      </div>
                     </FormControl>
                     <FormMessage />
                   </FormItem>
