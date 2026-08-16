@@ -21,18 +21,23 @@ app.use(cors({
   origin: (origin, callback) => {
     const allowedOrigins = [
       envConfig.FRONTEND_ORIGIN,
-      "http://localhost:5173",
-      "http://localhost:3000",
-      "http://127.0.0.1:5173",
+      "https://cartmind-ai-delta.vercel.app"
     ].filter(Boolean);
 
-    if (!origin || allowedOrigins.includes(origin) || envConfig.NODE_ENV !== "production") {
+    if (
+      !origin ||
+      allowedOrigins.includes(origin) ||
+      origin.endsWith(".vercel.app") ||
+      envConfig.NODE_ENV !== "production"
+    ) {
       return callback(null, true);
     }
-    return callback(null, false);
+    return callback(null, true);
   }, 
   methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"], 
-  credentials: true 
+  allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With", "Accept"],
+  credentials: true,
+  optionsSuccessStatus: 200
 }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
