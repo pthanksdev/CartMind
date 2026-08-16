@@ -248,3 +248,17 @@ model Inquiry {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
+
+model HeroBanner {
+  id        String   @id @default(uuid())
+  subtitle  String?
+  title     String
+  action    String   @default("Shop now")
+  actionUrl String   @default("/products")
+  note      String?
+  imageUrl  String
+  isActive  Boolean  @default(true)
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

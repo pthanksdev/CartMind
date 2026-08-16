@@ -4,6 +4,7 @@ import { HTTPSTATUS } from "../config/http.config";
 import {
   createCouponService,
   getAllCouponsService,
+  getActiveCouponsService,
   toggleCouponStatusService,
   deleteCouponService,
   validateCouponService,
@@ -17,6 +18,11 @@ export const createCouponController = asyncHandler(async (req: Request, res: Res
 export const getAllCouponsController = asyncHandler(async (_req: Request, res: Response) => {
   const coupons = await getAllCouponsService();
   return res.status(HTTPSTATUS.OK).json({ message: "Coupons retrieved", coupons });
+});
+
+export const getActiveCouponsController = asyncHandler(async (_req: Request, res: Response) => {
+  const coupons = await getActiveCouponsService();
+  return res.status(HTTPSTATUS.OK).json({ message: "Active coupons retrieved", coupons });
 });
 
 export const toggleCouponStatusController = asyncHandler(async (req: Request, res: Response) => {
