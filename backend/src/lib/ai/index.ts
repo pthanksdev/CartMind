@@ -1,5 +1,5 @@
 import { generateText } from "ai";
-import { google } from "@ai-sdk/google";
+import { createGoogleGenerativeAI } from "@ai-sdk/google";
 import {
   GENERATE_DESCRIPTION_SYSTEM_PROMPT,
   REPHRASE_TITLE_SYSTEM_PROMPT,
@@ -16,7 +16,8 @@ export const generateAIAdminContent = async (
 
   if (apiKey) {
     try {
-      const googleModel = google("gemini-2.0-flash", { apiKey });
+      const googleProvider = createGoogleGenerativeAI({ apiKey });
+      const googleModel = googleProvider("gemini-2.0-flash");
       if (action === "rephrase-title") {
         const { text } = await generateText({
           model: googleModel,
