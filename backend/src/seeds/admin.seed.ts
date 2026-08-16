@@ -1,6 +1,19 @@
 import "dotenv/config";
 import bcrypt from "bcryptjs";
+import slugify from "slugify";
 import { prisma } from "../config/database.config";
+
+const defaultCategories = [
+  { name: "Beverages", imageUrl: "https://res.cloudinary.com/dp9vvlndo/image/upload/v1781265027/Beverages_lcunrb.png", description: "Drinks, juices, and everyday refreshments.", isActive: true },
+  { name: "Snacks", imageUrl: "https://res.cloudinary.com/dp9vvlndo/image/upload/v1781265027/Snacks_wxordv.png", description: "Chips, biscuits, and quick bites.", isActive: true },
+  { name: "Bakery", imageUrl: "https://res.cloudinary.com/dp9vvlndo/image/upload/v1781265027/Bakery_xwbrje.png", description: "Fresh bread, pastries, and baked goods.", isActive: true },
+  { name: "Baby Care", imageUrl: "https://res.cloudinary.com/dp9vvlndo/image/upload/v1781265026/Baby_Care_bxxwu0.png", description: "Essentials for infants and toddlers.", isActive: true },
+  { name: "Frozen Foods", imageUrl: "https://res.cloudinary.com/dp9vvlndo/image/upload/v1781265027/Frozen_Foods_wknnin.png", description: "Frozen meals and freezer staples.", isActive: true },
+  { name: "Fruits & Vegetables", imageUrl: "https://res.cloudinary.com/dp9vvlndo/image/upload/v1781265026/Fruits_Vegetables_lnmslm.png", description: "Fresh produce for everyday cooking.", isActive: true },
+  { name: "Meat & Seafood", imageUrl: "https://res.cloudinary.com/dp9vvlndo/image/upload/v1781265026/Meat_Seafood_nhtxen.png", description: "Fresh meat, fish, and seafood options.", isActive: true },
+  { name: "Pantry Staples", imageUrl: "https://res.cloudinary.com/dp9vvlndo/image/upload/v1781265027/Pantry_Staples_ppwolo.png", description: "Rice, flour, oil, and pantry basics.", isActive: true },
+  { name: "Personal Care", imageUrl: "https://res.cloudinary.com/dp9vvlndo/image/upload/v1781265026/Personal_Care_osossq.png", description: "Daily hygiene and personal grooming items.", isActive: true },
+];
 
 export const ensureAdminExists = async () => {
   try {
@@ -8,37 +21,48 @@ export const ensureAdminExists = async () => {
     const adminPassword = process.env.ADMIN_PASSWORD || "Admin@123456";
     const adminName = process.env.ADMIN_NAME || "CartMind Admin";
 
-    const existingAdmin = await prisma.user.findFirst({
+    let adminUser = await prisma.user.findFirst({
       where: {
         OR: [
           { email: adminEmail },
           { role: "admin" },
         ],
       },
-    });
+    }).catch(() => null);
 
-    if (existingAdmin) {
-      console.log(`[Admin Seed] Admin user ready in DB (Email: ${existingAdmin.email})`);
-      return existingAdmin;
+    if (!adminUser) {
+      const hashedPassword = await bcrypt.hash(adminPassword, 10);
+      adminUser = await prisma.user.create({
+        data: {
+          name: adminName,
+          email: adminEmail,
+          password: hashedPassword,
+          role: "admin",
+        },
+      }).catch(() => null);
+
+      if (adminUser) {
+        console.log("✅ [Admin Seed] Admin user successfully created and saved to database!");
+        console.log(`📌 Admin Email: ${adminUser.email}`);
+      }
+    } else {
+      console.log(`[Admin Seed] Admin user ready in DB (Email: ${adminUser.email})`);
     }
 
-    const hashedPassword = await bcrypt.hash(adminPassword, 10);
+    // Auto-seed categories if empty
+    const categoryCount = await prisma.category.count().catch(() => 0);
+    if (categoryCount === 0) {
+      const categoryData = defaultCategories.map((cat) => ({
+        ...cat,
+        slug: slugify(cat.name, { lower: true, strict: true }),
+      }));
+      await prisma.category.createMany({ data: categoryData }).catch(() => null);
+      console.log("✅ [Category Seed] Default categories auto-seeded successfully!");
+    }
 
-    const newAdmin = await prisma.user.create({
-      data: {
-        name: adminName,
-        email: adminEmail,
-        password: hashedPassword,
-        role: "admin",
-      },
-    });
-
-    console.log("✅ [Admin Seed] Admin user successfully created and saved to database!");
-    console.log(`📌 Admin Email: ${newAdmin.email}`);
-    console.log(`🔑 Default Password: ${adminPassword}`);
-    return newAdmin;
+    return adminUser;
   } catch (error) {
-    console.error("⚠️ [Admin Seed] Unable to auto-seed admin user:", error);
+    console.error("⚠️ [Seed Error]:", error);
   }
 };
 

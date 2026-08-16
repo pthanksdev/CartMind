@@ -19,19 +19,7 @@ app.use("/api/webhook", webhookRouter);
 
 app.use(cors({ 
   origin: (origin, callback) => {
-    const allowedOrigins = [
-      envConfig.FRONTEND_ORIGIN,
-      "https://cartmind-ai-delta.vercel.app"
-    ].filter(Boolean);
-
-    if (
-      !origin ||
-      allowedOrigins.includes(origin) ||
-      origin.endsWith(".vercel.app") ||
-      envConfig.NODE_ENV !== "production"
-    ) {
-      return callback(null, true);
-    }
+    // Dynamically reflect requesting origin to allow credentialed requests from Vercel & localhost
     return callback(null, true);
   }, 
   methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"], 
