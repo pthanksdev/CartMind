@@ -51,13 +51,23 @@ app.get("/health", asyncHandler(
 app.use("/api", routes);
 
 if (envConfig.NODE_ENV === "production") {
+  const webPath = path.resolve(__dirname, "../../web/dist");
   const clientPath = path.resolve(__dirname, "../../client/dist");
-  //Serve static files
-  app.use(express.static(clientPath));
+  const activePath = require("fs").existsSync(webPath) ? webPath : clientPath;
 
-  app.get(/^(?!\/api).*/, (req: Request, res: Response) => {
-    res.sendFile(path.join(clientPath, "index.html"));
-  });
+  if (require("fs").existsSync(activePath)) {
+    app.use(express.static(activePath));
+    app.get(/^(?!\/api).*/, (req: Request, res: Response) => {
+      res.sendFile(path.join(activePath, "index.html"));
+    });
+  } else {
+    app.get("/", (_req: Request, res: Response) => {
+      res.status(HTTPSTATUS.OK).json({
+        message: "CartMind API is online & healthy!",
+        environment: envConfig.NODE_ENV,
+      });
+    });
+  }
 }
 
 app.use(errorHandler);
