@@ -3,7 +3,7 @@ import CartSheet from "@/components/cart-sheet";
 import Footer from "@/components/footer";
 import Nav from "@/components/nav";
 import { AuthDialog } from "@/components/auth-dialog";
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate, useLocation } from "react-router-dom";
 import { useEffect } from "react";
 import { useUser } from "@/hooks/use-user";
 import { useCart } from "@/hooks/use-cart";
@@ -11,12 +11,17 @@ import { useCart } from "@/hooks/use-cart";
 const AppLayout = () => {
   const { data: user } = useUser();
   const fetchCart = useCart((state) => state.fetchCart);
+  const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
-    if (user) {
+    // If admin logs in or accesses storefront, automatically redirect to admin dashboard
+    if (user?.isAdmin) {
+      navigate("/admin", { replace: true });
+    } else if (user) {
       fetchCart();
     }
-  }, [user]);
+  }, [user, navigate, location.pathname]);
 
   return (
     <div className="flex min-h-screen flex-col">

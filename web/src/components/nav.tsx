@@ -128,32 +128,35 @@ const Nav = () => {
               </DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuGroup className="space-y-2">
-                <DropdownMenuItem asChild>
-                  <Link to={PROTECTED_ROUTES.ORDERS}>
-                    <Package />
-                    Order history
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link to={PROTECTED_ROUTES.ACCOUNT_ADDRESSES}>
-                    <MapPin />
-                    Addresses
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link to={PROTECTED_ROUTES.ACCOUNT_REVIEWS}>
-                    <MessageSquareText />
-                    Ratings & reviews
-                  </Link>
-                </DropdownMenuItem>
                 {isAdmin ? (
                   <DropdownMenuItem asChild>
-                    <Link to={PROTECTED_ROUTES.ADMIN_DASHBOARD}>
+                    <Link to={PROTECTED_ROUTES.ADMIN_DASHBOARD} className="font-semibold text-green-light">
                       <LayoutDashboard />
-                      Admin portal
+                      Admin Dashboard
                     </Link>
                   </DropdownMenuItem>
-                ) : null}
+                ) : (
+                  <>
+                    <DropdownMenuItem asChild>
+                      <Link to={PROTECTED_ROUTES.ORDERS}>
+                        <Package />
+                        Order history
+                      </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                      <Link to={PROTECTED_ROUTES.ACCOUNT_ADDRESSES}>
+                        <MapPin />
+                        Addresses
+                      </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                      <Link to={PROTECTED_ROUTES.ACCOUNT_REVIEWS}>
+                        <MessageSquareText />
+                        Ratings & reviews
+                      </Link>
+                    </DropdownMenuItem>
+                  </>
+                )}
               </DropdownMenuGroup>
               <DropdownMenuSeparator />
               <DropdownMenuItem

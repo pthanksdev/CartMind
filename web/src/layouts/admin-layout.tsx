@@ -1,6 +1,5 @@
-import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
+import { Link, Outlet, useLocation, useNavigate, Navigate } from "react-router-dom";
 import { LayoutDashboard, ShoppingCart, Package, ArrowLeft, LogOut, FolderTree, Users, Boxes, Ticket, Settings, Wallet, HelpCircle } from "lucide-react";
-import { Navigate } from "react-router-dom";
 import { Spinner } from "@/components/ui/spinner";
 import Logo from "@/components/logo";
 import { Button } from "@/components/ui/button";
@@ -21,6 +20,7 @@ import { logoutMutationFn } from "@/lib/api";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { PROTECTED_ROUTES } from "@/routes/route";
+import { useUser } from "@/hooks/use-user";
 
 const adminNavItems = [
   {
@@ -77,22 +77,16 @@ const adminNavItems = [
 ];
 
 export default function AdminLayout() {
-  //const { data: user, isLoading } = useUser();
-
-  const isLoading = false
-  const user = {
-    name:"John",
-    email:"john@gmail.com",
-    isAdmin:true
-  }
+  const { data: user, isLoading } = useUser();
   const navigate = useNavigate();
-  const {pathname} = useLocation()
+  const { pathname } = useLocation();
   const queryClient = useQueryClient();
 
   const logoutMutation = useMutation({
     mutationFn: logoutMutationFn,
     onSuccess: () => {
       queryClient.setQueryData(["current-user"], null);
+      queryClient.removeQueries({ queryKey: ["current-user"] });
       toast.success("Logged out successfully");
       navigate("/");
     },
@@ -100,14 +94,14 @@ export default function AdminLayout() {
 
   if (isLoading) {
     return (
-      <div className="flex min-h-[70h] flex-col items-center justify-center gap-3">
+      <div className="flex min-h-[70vh] flex-col items-center justify-center gap-3">
         <Logo />
         <Spinner className="size-8" />
       </div>
     );
   }
 
-  // Enforce admin role check
+  // Enforce strict admin role check
   if (!user || !user.isAdmin) {
     return <Navigate to="/" replace />;
   }
@@ -118,7 +112,7 @@ export default function AdminLayout() {
         <Sidebar className="border-r border-border">
           <SidebarHeader className="flex h-16 items-center border-b border-border/10 px-4">
             <Link to={PROTECTED_ROUTES.ADMIN_DASHBOARD} className="flex items-center gap-2 font-semibold">
-              <Logo to={PROTECTED_ROUTES.ADMIN_DASHBOARD}  />
+              <Logo to={PROTECTED_ROUTES.ADMIN_DASHBOARD} />
               <span className="text-xs font-bold uppercase tracking-wider text-secondary">Admin</span>
             </Link>
           </SidebarHeader>
@@ -132,13 +126,12 @@ export default function AdminLayout() {
                     return (
                       <SidebarMenuItem key={item.to}>
                         <SidebarMenuButton 
-                        asChild
-                        isActive={isActive}
+                          asChild
+                          isActive={isActive}
                         >
                           <Link
                             to={item.to}
-                            className="flex w-full items-center gap-3 text-[15px]! rounded-lg py-2 font-medium transition-all "
-                            
+                            className="flex w-full items-center gap-5 text-[15px]! rounded-lg py-2 font-medium transition-all"
                           >
                             <Icon className="h-4 w-4" />
                             <span>{item.label}</span>
@@ -158,7 +151,7 @@ export default function AdminLayout() {
               onClick={() => navigate("/")}
             >
               <ArrowLeft className="h-4 w-4" />
-              Storefront
+              Storefront Preview
             </Button>
             <Button
               variant="ghost"
