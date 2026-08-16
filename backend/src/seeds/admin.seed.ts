@@ -66,6 +66,4 @@ export const ensureAdminExists = async () => {
   }
 };
 
-if (require.main === module) {
-  ensureAdminExists().then(() => process.exit(0));
-}
+// Auto-seed function called cleanly during startup
