@@ -68,9 +68,10 @@ app.use(errorHandler);
 
 import { ensureAdminExists } from "./seeds/admin.seed";
 
-const port = Number(envConfig.PORT) || 5000;
+const port = Number(process.env.PORT || envConfig.PORT) || 5000;
 
-app.listen(port, async () => {
+app.listen(port, "0.0.0.0", async () => {
+  console.log(`Server listening on 0.0.0.0:${port}`);
   await connectDatabase();
   await ensureAdminExists();
   console.log(`Server running on port ${port} in ${envConfig.NODE_ENV} mode`);

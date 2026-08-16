@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "build": "cd backend && npm install && npx prisma generate && (npx prisma db push --accept-data-loss || true) && npx tsup src/index.ts --format cjs --out-dir dist && cp ./package.json ./dist",
-    "start": "cd backend && npm start"
+    "build": "cd backend && npm install && npx prisma generate && npx tsup src/index.ts --format cjs --out-dir dist && cp ./package.json ./dist",
+    "start": "cd backend && npx prisma db push --accept-data-loss && node dist/index.js"
   }
 }
