@@ -18,8 +18,20 @@ const app = express();
 app.use("/api/webhook", webhookRouter);
 
 app.use(cors({ 
-  origin: (origin, callback) => callback(null, true), 
-  methods: ["GET", "POST", "PUT", "DELETE"], 
+  origin: (origin, callback) => {
+    const allowedOrigins = [
+      envConfig.FRONTEND_ORIGIN,
+      "http://localhost:5173",
+      "http://localhost:3000",
+      "http://127.0.0.1:5173",
+    ].filter(Boolean);
+
+    if (!origin || allowedOrigins.includes(origin) || envConfig.NODE_ENV !== "production") {
+      return callback(null, true);
+    }
+    return callback(null, false);
+  }, 
+  methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"], 
   credentials: true 
 }));
 app.use(express.json());
