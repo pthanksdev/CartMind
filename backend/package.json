@@ -9,13 +9,15 @@
     "postinstall": "npx prisma generate",
     "start": "npx prisma db push --accept-data-loss && node dist/index.js",
     "seed:admin": "ts-node --transpile-only src/seeds/admin.seed.ts",
-    "seed:categories": "ts-node --transpile-only src/seeds/category.seed.ts"
+    "seed:categories": "ts-node --transpile-only src/seeds/category.seed.ts",
+    "seed:products": "ts-node --transpile-only src/seeds/product.seed.ts"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {
+    "@ai-sdk/google": "^3.0.110",
     "@prisma/client": "6.19.3",
     "@types/streamifier": "^0.1.2",
     "ai": "^6.0.207",

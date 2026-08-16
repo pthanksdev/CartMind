@@ -2,6 +2,7 @@ import "dotenv/config";
 import bcrypt from "bcryptjs";
 import slugify from "slugify";
 import { prisma } from "../config/database.config";
+import { seedProducts } from "./product.seed";
 
 const defaultCategories = [
   { name: "Beverages", imageUrl: "https://res.cloudinary.com/dp9vvlndo/image/upload/v1781265027/Beverages_lcunrb.png", description: "Drinks, juices, and everyday refreshments.", isActive: true },
@@ -58,6 +59,12 @@ export const ensureAdminExists = async () => {
       }));
       await prisma.category.createMany({ data: categoryData }).catch(() => null);
       console.log("✅ [Category Seed] Default categories auto-seeded successfully!");
+    }
+
+    // Auto-seed products if database has fewer than 10 products
+    const productCount = await prisma.product.count().catch(() => 0);
+    if (productCount < 10) {
+      await seedProducts();
     }
 
     return adminUser;

@@ -35,4 +35,7 @@ export const envConfig = {
   get FRONTEND_ORIGIN() {
     return process.env.FRONTEND_ORIGIN || "http://localhost:5173";
   },
+  get GEMINI_API_KEY() {
+    return process.env.GEMINI_API_KEY || process.env.GOOGLE_GENERATIVE_AI_API_KEY || "";
+  },
 };
