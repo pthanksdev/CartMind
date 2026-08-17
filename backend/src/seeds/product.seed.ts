@@ -1432,26 +1432,36 @@ export const seedProducts = async () => {
           counter++;
         }
 
-        await prisma.product.create({
-          data: {
-            userId: adminUser.id,
-            categoryId,
-            name: item.name,
-            slug,
-            description: item.description,
-            images: item.images,
-            originalPrice: item.originalPrice,
-            salePrice: item.salePrice,
-            discountPercent: item.discountPercent || Math.round(((item.originalPrice - item.salePrice) / item.originalPrice) * 100),
-            discountLabel: item.discountPercent ? `${item.discountPercent}% OFF` : undefined,
-            unit: item.unit,
-            stockCount: item.stockCount,
-            ratingAverage: parseFloat((4.0 + Math.random() * 1.0).toFixed(1)),
-            reviewCount: Math.floor(12 + Math.random() * 88),
-            isActive: true,
-          },
+        // Check if product already exists
+        const existingProduct = await prisma.product.findFirst({
+          where: { OR: [{ slug }, { name: item.name }] },
         });
-        totalCreatedCount++;
+        if (existingProduct) continue;
+
+        try {
+          await prisma.product.create({
+            data: {
+              userId: adminUser.id,
+              categoryId,
+              name: item.name,
+              slug,
+              description: item.description,
+              images: item.images,
+              originalPrice: item.originalPrice,
+              salePrice: item.salePrice,
+              discountPercent: item.discountPercent || Math.round(((item.originalPrice - item.salePrice) / item.originalPrice) * 100),
+              discountLabel: item.discountPercent ? `${item.discountPercent}% OFF` : undefined,
+              unit: item.unit,
+              stockCount: item.stockCount,
+              ratingAverage: parseFloat((4.0 + Math.random() * 1.0).toFixed(1)),
+              reviewCount: Math.floor(12 + Math.random() * 88),
+              isActive: true,
+            },
+          });
+          totalCreatedCount++;
+        } catch (createErr) {
+          // Gracefully skip duplicate constraint race conditions
+        }
       }
     }
 
@@ -1461,8 +1471,3 @@ export const seedProducts = async () => {
     console.error("❌ [Product Seed Error]:", error);
   }
 };
-
-// If run directly via command line
-if (require.main === module) {
-  seedProducts().then(() => process.exit(0));
-}
